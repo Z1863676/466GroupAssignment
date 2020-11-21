@@ -12,13 +12,13 @@
 </div>
 <table>
 	<tr>
-		<td>Track Micronutrients</td>
-		<td>Search Food</td>
-		<td>Search Workouts</td>
-		<td>Update Weight</td>
-		<td>Track Food Consumption</td>
-		<td>Enter Workout</td>
-		<td>Track Workouts</td>
+		<td><?php include("env.php"); echo "<a href=\"".$mainDir."trackMicro.php\">";?>Track Micronutrients</a></td>
+		<td><?php include("env.php"); echo "<a href=\"".$mainDir."searchFood.php\">";?>Search Food</a></td>
+		<td><?php include("env.php"); echo "<a href=\"".$mainDir."searchWorkout.php\">";?>Search Workouts</a></td>
+		<td><?php include("env.php"); echo "<a href=\"".$mainDir."updateWeight.php\">";?>Update Weight</td>
+		<td><?php include("env.php"); echo "<a href=\"".$mainDir."trackFoodConsumption.php\">";?>Track Food Consumption</td>
+		<td><?php include("env.php"); echo "<a href=\"".$mainDir."enterWorkout.php\">";?>Enter Workout</td>
+		<td><?php include("env.php"); echo "<a href=\"".$mainDir."trackWorkout.php\">";?>Track Workouts</td>
 	
 	</tr>
 </table>
