@@ -1,3 +1,22 @@
+<?php
+session_start();
+require('dbconn.php');
+
+$weights;
+$weightDates;
+
+$sql = 'SELECT * FROM UserWeight WHERE id=\'' . $_SESSION['userid'] . '\';';
+$stmt = $conn->prepare( $sql );
+$stmt->execute();
+$res = $stmt->fetchAll( PDO::FETCH_ASSOC );
+
+foreach($res as $row) {
+	$weights = array($row['currentWeight']);
+	$weightDates = array($row['weightDate']);
+}
+?>
+
+
 <html>
 
 <head><title>466 Group Project</title></head>
@@ -8,7 +27,9 @@
 <div class="top">
 	<h1 class="title">Fitness Tracker</h1>
 
-	<p>Edit Data Base</p>
+	<?php
+	echo '<p>Welcome back ' . $_SESSION['username'] . '!</p>';
+	?>
 </div>
 <table>
 	<tr>
@@ -21,12 +42,31 @@
 		<td><?php include("env.php"); echo "<a href=\"".$mainDir."trackWorkout.php\">";?>Track Workouts</td>
 	
 	</tr>
-</table>
+</table></br></br>
 
-<p>Here will go the "dashboard" which will contain a "graph" of how many calories were<br>
-   burnt. A "graph" of the weight of the user. When I say graph I really mean table <br>
-   because that is too much work -Luke
-</p>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script type="text/javascript">
+
+window.onload = function () {
+	var chart = new CanvasJS.Chart("chartContainer", {
+		title:{
+			text: "Weight Summary"              
+		},
+		data: [              
+		{
+			// Change type to "doughnut", "line", "splineArea", etc.
+			type: "line",
+			dataPoints: [
+				{ label: <?php echo '["' . implode('", "', $weightDates) . '"]' ?>,  y: <?php echo implode($weights)?>  }
+			]
+		}
+		]
+	});
+	chart.render();
+}
+</script>
+
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
 
 </body>
 
