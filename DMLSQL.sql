@@ -45,18 +45,44 @@ INSERT INTO Micronutrients
  * Poulate the meal table with pre-determined values
  */
 INSERT INTO Meal
-    VALUES  ('2020-20-11',        '11:29',     'ham',       1),
-            ('2020-15-11',        '12:13',     'cheese',    1),
-            ('2020-09-11',        '12:40',     'banana',    2),
-            ('2020-17-11',        '12:10',     'ham',       3),
-            ('2020-13-11',        '10:11',     'apple',     2),
-            ('2020-14-11',        '12:30',     'cookie',    4);
+    (mealDate, mealTime, id)
+    VALUES  ('2020-10-11',        '11:29', 3),
+            ('2020-07-23',        '12:01', 2),
+            ('2020-09-23',        '13:23', 4),
+            ('2020-04-23',        '16:54', 1),
+            ('2020-11-23',        '5:53',  1),
+            ('2020-02-23',        '23:24', 2),
+            ('2020-03-23',        '16:34', 3),
+            ('2020-08-23',        '14:10', 4);
 
 /**
  * Poulate the weight table with pre-determined values
  */
 INSERT INTO UserWeight
-    VALUES  (1,     180,    '2020-25-10',   '12:40'),
+    VALUES  (1,     180,    '2020-10-25',   '12:40'),
             (2,     142,    '2020-02-11',   '09:15'),
-            (3,     167,    '2020-20-11',   '19:40'),
-            (4,     192,    '2020-16-11',   '10:23'); 	
+            (3,     167,    '2020-11-20',   '19:40'),
+            (4,     192,    '2020-11-16',   '10:23');
+
+INSERT INTO MealContains
+    VALUES  (1, 'cheese', 2),
+            (1, 'cashews', 20),
+            (2, 'apple', 20),
+            (2, 'cookie', 20),
+            (3, 'cheese', 20),
+            (3, 'cashews', 20),
+            (4, 'cashews', 20),
+            (4, 'apple', 20),
+            (5, 'banana', 20),
+            (6, 'cashews', 20),
+            (7, 'apple', 20),
+            (8, 'cookie', 20),
+            (4, 'ham', 20);
+
+INSERT INTO FoodContains
+    VALUES  ('cheese',  'calcium',    15),
+            ('ham',     'protein',     40),
+            ('cookie',  'sugar',     8),
+            ('banana',  'potassium',    30),
+            ('apple',   'fiber',    2),
+            ('cashews', 'carbs',     15);
