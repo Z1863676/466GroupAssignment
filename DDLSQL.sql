@@ -106,7 +106,7 @@ CREATE TABLE MealContains(
     mealId 		INT NOT NULL,
     foodname		VARCHAR(48) NOT NULL,
     amount 		INT 	NOT NULL,
-
+    measuredIn		VARCHAR(10) DEFAULT 'oz',
     PRIMARY KEY (mealId, foodName),
     FOREIGN KEY (mealId) REFERENCES Meal(mealId),
     FOREIGN KEY (foodname) REFERENCES FoodBeverage(foodname)

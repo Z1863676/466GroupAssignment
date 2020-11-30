@@ -65,6 +65,7 @@ INSERT INTO UserWeight
             (4,     192,    '2020-11-16',   '10:23');
 
 INSERT INTO MealContains
+    (mealId, foodName, amount)
     VALUES  (1, 'cheese', 2),
             (1, 'cashews', 20),
             (2, 'apple', 20),
