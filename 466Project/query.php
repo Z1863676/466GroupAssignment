@@ -96,5 +96,26 @@ else if(isset($_POST['searchFood'])) {
 }
 else if(isset($_POST['entMacro'])) {
 
+}else if(isset($_POST['enterMeal'])){
+
+	$sql = "INSERT INTO Meal (mealDate, mealTime, id) VALUES ('".$_POST["date"]."', '".$_POST["time"]."', '".$_SESSION["userid"]."');"; 
+	$stmt = $conn->prepare($sql);
+	$stmt->execute();
+	$sql = "SELECT MAX(mealId) FROM Meal;";
+	$res = $conn->query($sql);
+	
+	$row = $res->fetch();	
+	$mealId = $row[0];
+
+	for($i = 1; $i <= 2; ++$i){
+		if($_POST["food2"] == "None" && $i==2){
+			header("success.php");
+			break;
+		}
+		$sql = "INSERT INTO MealContains VALUES ('".$mealId."', '".$_POST["food".$i]."', ?, '".$_POST["food".$i."type"]."');";
+		$prepare = $conn->prepare($sql);
+		$prepare->execute(array($_POST["food".$i."measure"]));
+	}
+	header("success.php");
 }
 ?>

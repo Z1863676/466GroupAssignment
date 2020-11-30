@@ -35,6 +35,7 @@ require("dbconn.php");
 	</p>
 	<p>
 		First Food: <select name="food2">
+		<option>None</option>
 		<?php
 		$sql = 'SELECT foodname FROM FoodBeverage;';
         	$stmt = $conn->prepare( $sql );
