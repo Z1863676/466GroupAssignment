@@ -29,11 +29,11 @@ if( isset($_POST['entWorkout'])) {
 
     header("Location: success.php");
 }
-else if(isset($_POST['entWeight'])) {
+else if(isset($_POST['updateWeight'])) {
     //Initialize all of our variables
     $newWeight =    $_POST['newWeight'];
-    $dateOfWeight = $_POST['dateOfWeight'];
-    $timeOfWeight = $_POST['timeOfWeight'];
+    $dateOfWeight = $_POST['date'];
+    $timeOfWeight = $_POST['time'];
 
     //We need to select the id first and check for a NULL value so we can see they have entered a weight before as updating a table with
     //no entry WILL throw an error
