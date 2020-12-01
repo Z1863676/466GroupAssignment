@@ -13,7 +13,7 @@ table, th, td {
 session_start();
 require('dbconn.php');
 require('drawTable.php');
-
+require('trackFoodHTMLtoPrint.php');
 
 if( isset($_POST['entWorkout'])) {
     //Initialize all of our session variables
@@ -118,22 +118,30 @@ else if(isset($_POST['entMacro'])) {
 		$prepare->execute(array($_POST["food".$i."measure"]));
 	}
 	header("success.php");
-}else if(isset($_POST['foodConsumption'])){
+}else if(isset($_POST['foodConsumption']) or isset($_SESSION['foodConsumption'])){
 
+	if(isset($_POST['foodConsumption'])){
+		$_SESSION["startDate"] = $_POST["startDate"];
+		$_SESSION["endDate"] = $_POST["endDate"];
+		$_SESSION["units"] = $_POST["units"];
+	}
+	
+	
+	
 	$sql = "SELECT DISTINCT foodname, amount, measuredIn FROM MealContains WHERE mealId IN (SELECT mealId FROM Meal WHERE id = ".$_SESSION["userid"]." AND mealDate >= ? AND mealDate <= ?);";
 	
 	$prepare = $conn->prepare($sql);
-	$res = $prepare->execute(array($_POST["startDate"], $_POST["endDate"]));
+	$res = $prepare->execute(array($_SESSION["startDate"], $_SESSION["endDate"]));
 	
 	while(( $row = $prepare->fetch( PDO::FETCH_ASSOC ))){
 		if(!isset($table[$row["foodname"]])){
 			$table[$row["foodname"]] = 0;
 		}
 			
-		if($_POST["units"] == $row["measuredIn"]){
+		if($_SESSION["units"] == $row["measuredIn"]){
 			$table[$row["foodname"]] += $row["amount"];
 		}else{
-			if($row["measuredIn"] == "ibs" && $_POST["units"] == "oz"){
+			if($row["measuredIn"] == "ibs" && $_SESSION["units"] == "oz"){
 
 				$table[$row["foodname"]] += $row["amount"] * 16;
 			
@@ -145,15 +153,56 @@ else if(isset($_POST['entMacro'])) {
 	}
 
 	echo "<table>";
-	echo "<tr><th>Food Name</th><th>".$_POST["units"]."</th></tr>";
+	echo "<tr><th>Food Name</th><th>".$_SESSION["units"]."</th></tr>";
 	foreach($table as $item => $key){
 		echo "<tr><td>".$item."</td><td>".$key."</td></tr>";
 	}
 	echo "</table>";
-	echo "<p><form action=\"home.php\" method=\"POST\"><input type=\"submit\" name=\"fromQuery\" value=\"RETURN TO HOME\"></form></p>";
+	echo "<p><form action=\"home.php\" method=\"POST\"><input type=\"submit\" name=\"fromQuery\" value=\"RETURN TO HOME\"></form></p>";		
 
-
-
+}else if(isset($_SESSION["trackMicro"])){
+	$sql = "SELECT DISTINCT foodname, amount, measuredIn FROM MealContains WHERE mealId IN (SELECT mealId FROM Meal WHERE id = ".$_SESSION["userid"].");";
+	
+	$res = $conn->query($sql);
+	
+	while(( $row = $res->fetch( PDO::FETCH_ASSOC ))){
+		if(!isset($food[$row["foodname"]])){
+			$food[$row["foodname"]] = 0;
+		}
+		if($row["measuredIn"] == "ibs")	
+			$row["amount"] *= 16;
 		
+		$food[$row["foodname"]] += $row["amount"];
+			
+	}
+
+	$sql = "SELECT * FROM FoodContains WHERE foodname = ?;";
+
+	$prepare = $conn->prepare($sql);
+
+	foreach($food as $foodname => $amount){
+
+		$prepare->execute(array($foodname));
+		
+		while(($row = $prepare->fetch( PDO::FETCH_ASSOC ))){
+			if(!isset($micros[$row["nutrientName"]]))
+				$micros[$row["nutrientName"]] = 0;
+
+			$micros[$row["nutrientName"]] += $amount * $row["amount"];
+
+			
+		}
+
+	}
+	echo "<table>";
+	echo "<tr><th>Micronutrient Name</th><th>Amount</th></tr>";
+	foreach($micros as $item => $key){
+		echo "<tr><td>".$item."</td><td>".$key."</td></tr>";
+	}
+	echo "</table>";
+	echo "<p><form action=\"home.php\" method=\"POST\"><input type=\"submit\" name=\"fromQuery\" value=\"RETURN TO HOME\"></form></p>";	
+
 }
 ?>
+
+
