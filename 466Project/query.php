@@ -12,6 +12,7 @@ table, th, td {
 <?php
 session_start();
 require('dbconn.php');
+require('drawTable.php');
 
 
 if( isset($_POST['entWorkout'])) {
@@ -117,5 +118,42 @@ else if(isset($_POST['entMacro'])) {
 		$prepare->execute(array($_POST["food".$i."measure"]));
 	}
 	header("success.php");
+}else if(isset($_POST['foodConsumption'])){
+
+	$sql = "SELECT DISTINCT foodname, amount, measuredIn FROM MealContains WHERE mealId IN (SELECT mealId FROM Meal WHERE id = ".$_SESSION["userid"]." AND mealDate >= ? AND mealDate <= ?);";
+	
+	$prepare = $conn->prepare($sql);
+	$res = $prepare->execute(array($_POST["startDate"], $_POST["endDate"]));
+	
+	while(( $row = $prepare->fetch( PDO::FETCH_ASSOC ))){
+		if(!isset($table[$row["foodname"]])){
+			$table[$row["foodname"]] = 0;
+		}
+			
+		if($_POST["units"] == $row["measuredIn"]){
+			$table[$row["foodname"]] += $row["amount"];
+		}else{
+			if($row["measuredIn"] == "ibs" && $_POST["units"] == "oz"){
+
+				$table[$row["foodname"]] += $row["amount"] * 16;
+			
+			}else{
+				$table[$row["foodname"]] += $row["amount"] / 16;
+			}
+		}
+	
+	}
+
+	echo "<table>";
+	echo "<tr><th>Food Name</th><th>".$_POST["units"]."</th></tr>";
+	foreach($table as $item => $key){
+		echo "<tr><td>".$item."</td><td>".$key."</td></tr>";
+	}
+	echo "</table>";
+	echo "<p><form action=\"home.php\" method=\"POST\"><input type=\"submit\" name=\"fromQuery\" value=\"RETURN TO HOME\"></form></p>";
+
+
+
+		
 }
 ?>
