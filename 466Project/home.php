@@ -47,7 +47,7 @@ require('dbconn.php');
 	?>
 </div>
 <div class="container text-center">
-	<button type="button" class="btn btn-primary" href="trackFoodConsumption.php"><a href="trackFoodConsumption.php" style="color: white">Track Food Consumption</a></button>
+<button type="button" class="btn btn-primary" href="trackFoodConsumption.php"><a href="trackFoodConsumption.php" style="color: white">Track Food Consumption</a></button>
 	<button type="button" class="btn btn-primary" href="enterWorkout.php"><a href="enterWorkout.php" style="color: white">Enter Workout</a></button>
 	<button type="button" class="btn btn-primary" href="trackWorkout.php"><a href="trackWorkout.php" style="color: white">Track Workouts</button>
 </div>
@@ -61,7 +61,7 @@ require('dbconn.php');
 			        <a class="nav-link active" href="#">My Weights</a>
 			      </li>
 			      <li class="nav-item">
-			        <a class="nav-link" href="#">Update Weight</a>
+			        <a class="nav-link" href="updateWeight.php">Update Weight</a>
 			      </li>
 			    </ul>
 			  </div>
